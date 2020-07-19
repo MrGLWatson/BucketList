@@ -16,7 +16,8 @@ struct ContentView: View {
     @State private var locations = [MKPointAnnotation]()
     @State private var selectedPlace: MKPointAnnotation?
     @State private var showingPlaceDetails = false
-
+    @State private var showingEditScreen = false
+    
     @State private var isUnlocked = false
     var body: some View {
         ZStack {
@@ -37,22 +38,31 @@ struct ContentView: View {
                         newLocation.title = "Example Location"
                         newLocation.coordinate = self.centerCoordinate
                         self.locations.append(newLocation)
+                        
+                        self.selectedPlace = newLocation
+                        self.showingEditScreen = true
                     }) {
                         Image(systemName: "plus")
                     }
-                .padding()
+                    .padding()
                     .background(Color.black.opacity(0.75))
                     .foregroundColor(.white)
                     .font(.title)
-                .clipShape(Circle())
+                    .clipShape(Circle())
                     .padding(.trailing)
                 }
             }
         }
         .alert(isPresented: $showingPlaceDetails) {
             Alert(title: Text(selectedPlace?.title ?? "unknown"), message: Text(selectedPlace?.subtitle ?? "missing place information"), primaryButton: .default(Text("OK")), secondaryButton: .default(Text("Edit")) {
-                //edit this place
-            })
+                self.showingEditScreen = true
+                }
+            )
+        }
+        .sheet(isPresented: $showingEditScreen) {
+            if self.selectedPlace != nil {
+                EditView(placemark: self.selectedPlace!)
+            }
         }
     }
     func authenticate() {
@@ -76,7 +86,7 @@ struct ContentView: View {
             // no biometrics
         }
     }
- }
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
