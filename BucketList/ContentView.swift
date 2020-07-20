@@ -50,6 +50,7 @@ struct ContentView: View {
                     .font(.title)
                     .clipShape(Circle())
                     .padding(.trailing)
+                    .onAppear(perform: authenticate)
                 }
             }
         }

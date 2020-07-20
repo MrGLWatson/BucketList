@@ -26,7 +26,7 @@ struct EditView: View {
                 }
                 Section(header: Text("Nearby...")) {
                     if loadingState == .loaded {
-                        List(pages, id: \.pageId) { page in
+                        List(pages, id: \.pageid) { page in
                             Text(page.title)
                                 .font(.headline) +
                                 Text(": ") +
@@ -60,15 +60,20 @@ struct EditView: View {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 let decoder = JSONDecoder()
-                if let items = try? decoder.decode(Result.self, from: data) {
+                
+                do {
+                    let items = try decoder.decode(Result.self, from: data)
                     self.pages = Array(items.query.pages.values).sorted()
                     self.loadingState = .loaded
                     return
+                    
+                } catch {
+                    print(error)
                 }
             }
             self.loadingState = .failed
         }.resume()
-
+        
     }
 }
 
