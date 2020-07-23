@@ -44,13 +44,12 @@ struct ContentView: View {
                             self.showingEditScreen = true
                         }) {
                             Image(systemName: "plus")
+                            .padding()
+                            .background(Color.black.opacity(0.75))
+                            .foregroundColor(.white)
+                            .font(.title)
+                            .clipShape(Circle())                 .padding(.trailing)
                         }
-                        .padding()
-                        .background(Color.black.opacity(0.75))
-                        .foregroundColor(.white)
-                        .font(.title)
-                        .clipShape(Circle())
-                        .padding(.trailing)
                         //.onAppear(perform: authenticate)
                     }
                 }
@@ -59,10 +58,10 @@ struct ContentView: View {
                 Button("Unlock Places") {
                     self.authenticate()
                 }
-            .padding()
+                .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
-            .clipShape(Capsule())
+                .clipShape(Capsule())
             }
         }
         .alert(isPresented: $showingPlaceDetails) {
